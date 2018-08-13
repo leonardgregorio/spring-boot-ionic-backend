@@ -1,10 +1,12 @@
 package com.araleo02.cursomc.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.araleo02.cursomc.domain.Categoria;
 import com.araleo02.cursomc.repositories.CategoriaRepository;
+import com.araleo02.cursomc.services.exceptions.DataIntegrityException;
 import com.araleo02.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,5 +32,14 @@ public class CategoriaService {
 	public Categoria update(Categoria obj) {
 		find(obj.getId());
 		return repo.save(obj);
+	}
+
+	public void delete(Integer id) {
+		find(id);
+		try {
+			repo.delete(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityException("Não é possivel exlcluir uma categoria que possui produtos.");
+		}
 	}
 }
