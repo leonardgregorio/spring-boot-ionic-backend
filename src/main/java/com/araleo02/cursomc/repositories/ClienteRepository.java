@@ -6,7 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.araleo02.cursomc.domain.Cliente;
 
 @Repository
-
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
+	//@Transactional(readOnly=true)
+	Cliente findByEmail(String email);
 }
