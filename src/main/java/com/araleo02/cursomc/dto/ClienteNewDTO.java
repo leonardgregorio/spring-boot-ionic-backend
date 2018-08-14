@@ -14,7 +14,8 @@ import com.araleo02.cursomc.services.validation.ClienteInsert;
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-
+//Classe para insercao de um novo cliente, salvando junto o endereço, telefone 
+	
 	@NotEmpty(message="Preenchimento obrigatorio.")
 	@Length(min=5, max=80, message="O tamanho deve ser entre 5 e 80 caracteres.")
 	private String nome;

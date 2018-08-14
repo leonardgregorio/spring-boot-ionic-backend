@@ -7,10 +7,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.araleo02.cursomc.domain.Cliente;
+import com.araleo02.cursomc.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	//classe para fazer o update de um cliente
 	private Integer id;
 	
 	@NotEmpty(message="Preenchimento obrigatorio.")

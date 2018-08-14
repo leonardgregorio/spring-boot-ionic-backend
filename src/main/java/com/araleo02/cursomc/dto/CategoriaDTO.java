@@ -10,6 +10,7 @@ import com.araleo02.cursomc.domain.Categoria;
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	// classe para fazer um update da categoria
 	private Integer id;
 	
 	@NotEmpty(message="Preenchimento obrigatorio")
