@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: cursomc
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Sabrina
+Built-By: araleo02
 Implementation-Vendor-Id: com.araleo02.cursomc
 Build-Jdk: 1.8.0_181
 Implementation-URL: http://projects.spring.io/spring-boot/cursomc/
