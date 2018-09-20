@@ -1,3 +1,4 @@
+
 package com.araleo02.cursomc.domain;
 
 import java.io.Serializable;
@@ -51,6 +52,15 @@ public class Pedido implements Serializable {
 		this.instante = instante;
 		this.cliente = cliente;
 		this.enderecoDeEntrega = enderecoDeEntrega;
+	}
+
+	public double getValorTotal() { //aula 47
+		double soma = 0.0;
+
+		for (ItemPedido ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		return soma;
 	}
 
 	public Integer getId() {
