@@ -11,9 +11,11 @@ import com.araleo02.cursomc.domain.ItemPedido;
 import com.araleo02.cursomc.domain.PagamentoComBoleto;
 import com.araleo02.cursomc.domain.Pedido;
 import com.araleo02.cursomc.domain.enums.EstadoPagamento;
+import com.araleo02.cursomc.repositories.ClienteRepository;
 import com.araleo02.cursomc.repositories.ItemPedidoRepository;
 import com.araleo02.cursomc.repositories.PagamentoRepository;
 import com.araleo02.cursomc.repositories.PedidoRepository;
+import com.araleo02.cursomc.repositories.ProdutoRepository;
 import com.araleo02.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -30,10 +32,17 @@ public class PedidoService {
 
 	@Autowired
 	private ProdutoService produtoService;
+	
+	@Autowired
+	private ProdutoRepository PedidoService;
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	
 	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);
 		if (obj == null) {
@@ -45,6 +54,7 @@ public class PedidoService {
 	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
+		obj.setCliente(clienteRepository.findOne(obj.getCliente().getId())); //aula 59 - Implementando toString do pedido
 		obj.setInstante(new Date());
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
@@ -56,10 +66,12 @@ public class PedidoService {
 		pagamentoRepository.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setPreco(produtoService.find(ip.getProduto().getId()).getPreco());
+			ip.setProduto(produtoService.find(ip.getProduto().getId())); //aula 59 - Implementando toString do pedido
+			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
+		System.out.println(obj); //aula 59 - Implementando toString do pedido
 		return obj;
 	}
 
