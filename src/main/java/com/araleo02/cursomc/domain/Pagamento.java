@@ -16,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
+//trecho codigo na secao de perguntas da aula 50, sem essa alteracao estava dando erro 400 na hora de dar o post no pedido
+//alem disso, inseri informacoes no header do postman, consultar perguntas aula 50
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 @JsonSubTypes({ @JsonSubTypes.Type(value = PagamentoComBoleto.class, name = "pagamentoComBoleto"),
