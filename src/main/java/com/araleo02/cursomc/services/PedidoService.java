@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +43,8 @@ public class PedidoService {
 	@Autowired
 	private ClienteRepository clienteRepository;
 	
+	@Autowired
+	private EmailService emailService;
 	
 	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);
@@ -72,6 +75,9 @@ public class PedidoService {
 		}
 		itemPedidoRepository.save(obj.getItens());
 		System.out.println(obj); //aula 59 - Implementando toString do pedido
+		
+		emailService.sendOrderConfirmationEmail(obj);
+		
 		return obj;
 	}
 

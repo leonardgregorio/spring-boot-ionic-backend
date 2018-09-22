@@ -62,7 +62,13 @@
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 
-
+<!-- Aula 60. MockEmailService com Logger. Padroes Strategy e Template Method -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		
+		
 	</dependencies>
 
 	<build>
