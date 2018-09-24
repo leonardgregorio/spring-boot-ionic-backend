@@ -38,6 +38,7 @@ public class DevConfig {
 
 	}
 	
+	//aula 61. Implementando SmtpEmailService com servidor do Google
 	@Bean
 	public EmailService emailService() {
 		return new SmtpEmailService();
