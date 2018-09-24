@@ -33,7 +33,7 @@ public class PedidoService {
 
 	@Autowired
 	private ProdutoService produtoService;
-	
+
 	@Autowired
 	private ProdutoRepository PedidoService;
 
@@ -42,10 +42,10 @@ public class PedidoService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	public Pedido find(Integer id) {
 		Pedido obj = repo.findOne(id);
 		if (obj == null) {
@@ -57,7 +57,8 @@ public class PedidoService {
 	@Transactional
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
-		obj.setCliente(clienteRepository.findOne(obj.getCliente().getId())); //aula 59 - Implementando toString do pedido
+		obj.setCliente(clienteRepository.findOne(obj.getCliente().getId())); // aula 59 - Implementando toString do
+																				// pedido
 		obj.setInstante(new Date());
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
@@ -69,15 +70,15 @@ public class PedidoService {
 		pagamentoRepository.save(obj.getPagamento());
 		for (ItemPedido ip : obj.getItens()) {
 			ip.setDesconto(0.0);
-			ip.setProduto(produtoService.find(ip.getProduto().getId())); //aula 59 - Implementando toString do pedido
+			ip.setProduto(produtoService.find(ip.getProduto().getId())); // aula 59 - Implementando toString do pedido
 			ip.setPreco(ip.getProduto().getPreco());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
-		System.out.println(obj); //aula 59 - Implementando toString do pedido
-		
+		System.out.println(obj); // aula 59 - Implementando toString do pedido
+
 		emailService.sendOrderConfirmationEmail(obj);
-		
+
 		return obj;
 	}
 

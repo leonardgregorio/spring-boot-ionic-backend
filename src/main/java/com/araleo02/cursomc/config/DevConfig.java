@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.araleo02.cursomc.services.DBService;
+import com.araleo02.cursomc.services.EmailService;
+import com.araleo02.cursomc.services.SmtpEmailService;
 
 @Configuration // ele entra nessa classe pq tem esse @, que puxa quando o profile abaixo é
 				// setado, por isso as coisas funcionam
@@ -34,5 +36,10 @@ public class DevConfig {
 			return true;
 		}
 
+	}
+	
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }

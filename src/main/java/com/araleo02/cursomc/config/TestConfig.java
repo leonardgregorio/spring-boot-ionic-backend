@@ -27,7 +27,7 @@ public class TestConfig {
 
 		return true;
 	}
-	
+
 	@Bean // aula 60. MockEmailService com Logger. Padroes Strategy e Template Method
 
 	public EmailService emailService() {
