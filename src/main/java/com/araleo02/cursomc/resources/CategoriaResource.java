@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,8 @@ public class CategoriaResource {
 	}
 
 	// metodo post para salvar um item na categoria
-	@RequestMapping( method = RequestMethod.POST)
+	@PreAuthorize("hasAnyRole('ADMIN')") // aula 71. Autorizando endpoints para perfis específicos
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
 		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
@@ -45,6 +47,7 @@ public class CategoriaResource {
 	}
 
 	// metodo pu para atualizar um id
+	@PreAuthorize("hasAnyRole('ADMIN')") // aula 71. Autorizando endpoints para perfis específicos
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
 		Categoria obj = service.fromDTO(objDto);
@@ -54,6 +57,7 @@ public class CategoriaResource {
 	}
 
 	// metodo delete para deletar um id
+	@PreAuthorize("hasAnyRole('ADMIN')") // aula 71. Autorizando endpoints para perfis específicos
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
@@ -67,8 +71,10 @@ public class CategoriaResource {
 		List<CategoriaDTO> listDto = list.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDto);
 	}
-	//metodo para retornar uma paginacao de todas as categorias
-	//isso facilita depois para montar o front end para fazer os retornos por get atraves de paginas com oas parametros abaixo
+
+	// metodo para retornar uma paginacao de todas as categorias
+	// isso facilita depois para montar o front end para fazer os retornos por get
+	// atraves de paginas com oas parametros abaixo
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
