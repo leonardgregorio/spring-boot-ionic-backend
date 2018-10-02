@@ -48,6 +48,7 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado");
 		}
 
+		
 		Cliente obj = repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! id: " + id + "Tipo: " + Cliente.class.getName());
