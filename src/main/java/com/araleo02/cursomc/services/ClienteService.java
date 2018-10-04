@@ -1,5 +1,6 @@
 package com.araleo02.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.araleo02.cursomc.domain.Cidade;
 import com.araleo02.cursomc.domain.Cliente;
@@ -38,6 +40,9 @@ public class ClienteService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
+	@Autowired // Aula 83. Enviando imagem via endpoint
+	private S3Service s3service;
+
 	@Autowired // Aula 66. Adicionando senha a Cliente
 	private BCryptPasswordEncoder password;
 
@@ -48,7 +53,6 @@ public class ClienteService {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		
 		Cliente obj = repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! id: " + id + "Tipo: " + Cliente.class.getName());
@@ -115,5 +119,9 @@ public class ClienteService {
 			cli.getTelefones().add(objDto.getTelefone3());
 		}
 		return cli;
+	}
+
+	public URI uploadProfilePicture(MultipartFile multipartFile) { // Aula 83. Enviando imagem via endpoint
+		return s3service.uploadFile(multipartFile);
 	}
 }
