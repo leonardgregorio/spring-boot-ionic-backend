@@ -15,6 +15,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import com.araleo02.cursomc.domain.Cliente;
 import com.araleo02.cursomc.domain.Pedido;
 
 public abstract class AbstractEmailService implements EmailService {
@@ -78,6 +79,27 @@ public abstract class AbstractEmailService implements EmailService {
 		mmh.setText(htmlFromtemplatePedido(obj), true);
 
 		return mimeMessage;
+	}
+
+	// aula 75 - esqueci a senha
+	@Override
+	public void sendNewPasswordEmail(Cliente cliente, String newPass) {
+		SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPass);
+		sendEmail(sm);
+	}
+
+	// aula 75 - esqueci a senha
+	protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPass) {
+
+		SimpleMailMessage sm = new SimpleMailMessage();
+		sm.setTo(cliente.getEmail());
+		sm.setFrom(sender);
+		sm.setSubject("Solicitação de nova senha");
+		sm.setSentDate(new Date(System.currentTimeMillis()));
+		sm.setText("Nova senha: " + newPass);
+
+		return sm;
+
 	}
 
 }
