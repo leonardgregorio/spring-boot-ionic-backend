@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS_POST = { 
 			"/clientes",
-			"/clientes/picture",
+			
 			"/auth/forgot/**" }; // aula 71. Autorizando endpoints para perfis específicos
 								 // 75 - esqueci a senha
 

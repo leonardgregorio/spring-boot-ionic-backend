@@ -121,7 +121,19 @@ public class ClienteService {
 		return cli;
 	}
 
+	
 	public URI uploadProfilePicture(MultipartFile multipartFile) { // Aula 83. Enviando imagem via endpoint
-		return s3service.uploadFile(multipartFile);
+																   //Aula 85. Salvando URL da imagem em Cliente
+		UserSS user = UserService.authenticated();
+		if (user == null) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		URI uri = s3service.uploadFile(multipartFile);
+		Cliente cli = repo.findOne(user.getId());
+		cli.setImageUrl(uri.toString());
+		repo.save(cli);
+		return uri;
+
 	}
 }
