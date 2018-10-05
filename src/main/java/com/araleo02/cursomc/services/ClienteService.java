@@ -1,11 +1,13 @@
 package com.araleo02.cursomc.services;
 
+import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,6 +47,12 @@ public class ClienteService {
 
 	@Autowired // Aula 66. Adicionando senha a Cliente
 	private BCryptPasswordEncoder password;
+
+	@Autowired // aula 86. Usando padrão de nomes para imagens
+	private ImageService imageService;
+
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 
 	public Cliente find(Integer id) {
 
@@ -121,19 +129,17 @@ public class ClienteService {
 		return cli;
 	}
 
-	
 	public URI uploadProfilePicture(MultipartFile multipartFile) { // Aula 83. Enviando imagem via endpoint
-																   //Aula 85. Salvando URL da imagem em Cliente
+																	// Aula 85. Salvando URL da imagem em Cliente
+																	// aula 86. Usando padrão de nomes para imagens
 		UserSS user = UserService.authenticated();
 		if (user == null) {
 			throw new AuthorizationException("Acesso negado");
 		}
 
-		URI uri = s3service.uploadFile(multipartFile);
-		Cliente cli = repo.findOne(user.getId());
-		cli.setImageUrl(uri.toString());
-		repo.save(cli);
-		return uri;
+		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		String fileName = prefix + user.getId() + ".jpg";
+		return s3service.uploadFile(imageService.getInputSream(jpgImage, "jpg"), fileName, "image");
 
 	}
 }

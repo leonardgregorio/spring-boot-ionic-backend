@@ -27,40 +27,36 @@ public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	
-	@Column(unique=true)
+
+	@Column(unique = true)
 	private String email;
-	
+
 	private String cpfOuCnpj;
 	private Integer tipo;
-	
+
 	@JsonIgnore
-	private String senha; //Aula 66. Adicionando senha a Cliente
-	
-	
-	@OneToMany(mappedBy="cliente", cascade=CascadeType.ALL) //cascede permite que toda operacao em cliente reflita em endereco
+	private String senha; // Aula 66. Adicionando senha a Cliente
+
+	@OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL) // cascede permite que toda operacao em cliente reflita
+																// em endereco
 	private List<Endereco> enderecos = new ArrayList<>();
-	
+
 	@ElementCollection
-	@CollectionTable(name="TELEFONE")
+	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<>();
-	
-	//Aula 67. Salvando perfis de usuário na base de dados
-	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="PERFIS")
+
+	// Aula 67. Salvando perfis de usuário na base de dados
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy="cliente")
+	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-	
-	private String imageUrl; //Aula 85. Salvando URL da imagem em Cliente
-	
-	
-	
+
 	public Cliente() {
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -71,8 +67,8 @@ public class Cliente implements Serializable {
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = (tipo==null) ? null : tipo.getCod(); //operador ternario
-		this.senha=senha;
+		this.tipo = (tipo == null) ? null : tipo.getCod(); // operador ternario
+		this.senha = senha;
 		addPerfil(Perfil.CLIENTE);
 	}
 
@@ -115,20 +111,20 @@ public class Cliente implements Serializable {
 	public void setTipo(TipoCliente tipo) {
 		this.tipo = tipo.getCod();
 	}
-	
+
 	public String getSenha() {
 		return senha;
 	}
 
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}	
-	
-	//Aula 67. Salvando perfis de usuário na base de dados
+	}
+
+	// Aula 67. Salvando perfis de usuário na base de dados
 	public Set<Perfil> getPerfis() {
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
-	
+
 	public void addPerfil(Perfil perfil) {
 		perfis.add(perfil.getCod());
 	}
@@ -180,14 +176,6 @@ public class Cliente implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
 	}
 
 }
