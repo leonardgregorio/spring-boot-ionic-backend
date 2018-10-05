@@ -53,6 +53,9 @@ public class ClienteService {
 
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	
+	@Value("${img.profile.size}")
+	private Integer imgageSize;
 
 	public Cliente find(Integer id) {
 
@@ -129,7 +132,7 @@ public class ClienteService {
 		return cli;
 	}
 
-	public URI uploadProfilePicture(MultipartFile multipartFile) { // Aula 83. Enviando imagem via endpoint
+	public URI uploadProfilePicture(MultipartFile multipartFile) {  // Aula 83. Enviando imagem via endpoint
 																	// Aula 85. Salvando URL da imagem em Cliente
 																	// aula 86. Usando padrão de nomes para imagens
 		UserSS user = UserService.authenticated();
@@ -138,6 +141,9 @@ public class ClienteService {
 		}
 
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
+		jpgImage = imageService.cropSquare(jpgImage);
+		jpgImage = imageService.resize(jpgImage, imgageSize);
+		
 		String fileName = prefix + user.getId() + ".jpg";
 		return s3service.uploadFile(imageService.getInputSream(jpgImage, "jpg"), fileName, "image");
 
