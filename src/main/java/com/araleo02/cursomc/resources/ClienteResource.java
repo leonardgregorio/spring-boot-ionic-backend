@@ -45,6 +45,16 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	//Aula 93. Endpoint para buscar cliente por email
+	@RequestMapping(value = "/email", method = RequestMethod.GET)
+	public ResponseEntity<Cliente> find(@RequestParam (value="value") String email) {
+		Cliente obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+	
+	
+	
+	
 	// metodo put para atualizar um id
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {

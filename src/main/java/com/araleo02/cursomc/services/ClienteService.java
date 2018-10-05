@@ -53,7 +53,7 @@ public class ClienteService {
 
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
-	
+
 	@Value("${img.profile.size}")
 	private Integer imgageSize;
 
@@ -103,6 +103,21 @@ public class ClienteService {
 		return repo.findAll();
 	}
 
+	// Aula 93. Endpoint para buscar cliente por email
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Cliente obj = repo.findByEmail(email);
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Objeto não encontrado! ID: " + user.getId() + ", Tipo: " + Cliente.class.getName());
+		}
+		return obj;
+	}
+
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
@@ -132,7 +147,7 @@ public class ClienteService {
 		return cli;
 	}
 
-	public URI uploadProfilePicture(MultipartFile multipartFile) {  // Aula 83. Enviando imagem via endpoint
+	public URI uploadProfilePicture(MultipartFile multipartFile) { // Aula 83. Enviando imagem via endpoint
 																	// Aula 85. Salvando URL da imagem em Cliente
 																	// aula 86. Usando padrão de nomes para imagens
 		UserSS user = UserService.authenticated();
@@ -143,9 +158,10 @@ public class ClienteService {
 		BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
 		jpgImage = imageService.cropSquare(jpgImage);
 		jpgImage = imageService.resize(jpgImage, imgageSize);
-		
+
 		String fileName = prefix + user.getId() + ".jpg";
 		return s3service.uploadFile(imageService.getInputSream(jpgImage, "jpg"), fileName, "image");
 
 	}
+
 }
