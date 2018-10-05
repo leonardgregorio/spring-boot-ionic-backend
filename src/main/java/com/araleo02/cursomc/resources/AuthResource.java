@@ -33,6 +33,9 @@ public class AuthResource {
 		UserSS user = UserService.authenticated();
 		String token = jwtUtil.generateToken(user.getUsername());
 		response.addHeader("Authorization", "Bearer " + token);
+		response.addHeader("access-control-expose-headers", "Authorization"); // Aula 90. Expondo o header Authorization
+																				// (problema de Cors)
+
 		return ResponseEntity.noContent().build();
 	}
 
@@ -41,6 +44,6 @@ public class AuthResource {
 	public ResponseEntity<Void> forgot(@Valid @RequestBody EmailDTO objDto) {
 		service.sendNewPassword(objDto.getEmail());
 		return ResponseEntity.noContent().build();
-	} 
+	}
 
 }
