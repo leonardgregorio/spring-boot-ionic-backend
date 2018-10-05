@@ -41,12 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] PUBLIC_MATCHERS = { "/h2-console/**" };
 
-	private static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**" };
+	private static final String[] PUBLIC_MATCHERS_GET = { "/produtos/**", "/categorias/**","/estados/**" };
 
 	private static final String[] PUBLIC_MATCHERS_POST = { 
 			"/clientes",
 			
-			"/auth/forgot/**" }; // aula 71. Autorizando endpoints para perfis específicos
+			"/auth/forgot/**", }; // aula 71. Autorizando endpoints para perfis específicos
 								 // 75 - esqueci a senha
 
 	@Override
