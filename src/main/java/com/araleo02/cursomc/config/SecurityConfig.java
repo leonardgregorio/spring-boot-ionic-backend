@@ -71,13 +71,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 
-	@Bean
+	@Bean //Aula 97. Liberando CORS para PUT e DELETE
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+				configuration.setAllowedMethods(Arrays.asList("POST","GET", "PUT", "DELETE", "OPTIONS"));
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**",  configuration);
+		return source;
+	}
+
+	
+	/*@Bean //Aula 97. Liberando CORS para PUT e DELETE
 	CorsConfigurationSource corsConfigurationSource() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
 		return source;
-	}
+	}*/
 
+	
+	
 	// Aula 66. Adicionando senha a Cliente
 	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
