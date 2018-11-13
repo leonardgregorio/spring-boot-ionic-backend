@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
 
 import com.araleo02.cursomc.services.validation.ClienteInsert;
 
